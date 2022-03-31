@@ -13,5 +13,7 @@ namespace Mapping.Domain.Entities
         public string Password { get; set; }
 
         public int Age { get; set; }
+
+        public string Image { get; set; }
     }
 }

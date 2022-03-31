@@ -3,6 +3,7 @@ using Mapping.Domain.Entities;
 using Mapping.ViewModel.User;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
@@ -19,5 +20,7 @@ namespace Mapping.Service.Interfaces
         Task<BaseResponse<User>> CreateAsync(UserCreateViewModel user);
 
         Task<bool> DeleteAsync(Expression<Func<User, bool>> expression);
+
+        Task<string> UploadFileAsync(Stream file, string fileName);
     }
 }

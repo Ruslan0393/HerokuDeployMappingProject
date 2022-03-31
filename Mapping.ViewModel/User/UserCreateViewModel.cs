@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
 
 namespace Mapping.ViewModel.User
 {
@@ -13,5 +14,6 @@ namespace Mapping.ViewModel.User
         public string Password { get; set; }
 
         public int Age { get; set; }
+        public IFormFile Image { get; set; }
     }
 }

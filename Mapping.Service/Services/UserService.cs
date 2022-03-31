@@ -4,8 +4,11 @@ using Mapping.Domain.Common;
 using Mapping.Domain.Entities;
 using Mapping.Service.Interfaces;
 using Mapping.ViewModel.User;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
@@ -16,10 +19,16 @@ namespace Mapping.Service.Services
 
         private IUserRepository _userRepository;
         private IMapper _mapper;
-        public UserService(IUserRepository userRepository, IMapper mapper)
+        private IConfiguration _configuration;
+        private IWebHostEnvironment _env;
+
+
+        public UserService(IUserRepository userRepository, IMapper mapper, IConfiguration configuration, IWebHostEnvironment env)
         {
             _userRepository = userRepository;
             _mapper = mapper;
+            _configuration = configuration;
+            _env = env;
         }
 
         public async Task<BaseResponse<User>> CreateAsync(UserCreateViewModel model)
@@ -27,6 +36,9 @@ namespace Mapping.Service.Services
             var resalt = new BaseResponse<User>();
 
             var user = _mapper.Map<User>(model);
+          
+
+            user.Image = await UploadFileAsync(model.Image.OpenReadStream(), model.Image.FileName);
 
             var retuenUser = await _userRepository.CreateAsync(user);
 
@@ -38,7 +50,6 @@ namespace Mapping.Service.Services
 
             resalt.Data = retuenUser;
             return resalt;
-
         }
 
         public async Task<bool> DeleteAsync(Expression<Func<User, bool>> expression)
@@ -89,6 +100,18 @@ namespace Mapping.Service.Services
 
             resalt.Data = returnUser;
             return resalt;
+        }
+
+        public async Task<string> UploadFileAsync(Stream file, string fileName)
+        {
+            fileName = Guid.NewGuid().ToString() + "_" + fileName;
+            string storagePath = _configuration.GetSection("Storage:ImageUrl").Value;
+            string filePath = Path.Combine(_env.WebRootPath, storagePath);
+            FileStream newFile = File.Create(filePath);
+            await file.CopyToAsync(newFile);
+            newFile.Close();
+
+            return fileName;
         }
     }
 }
