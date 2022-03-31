@@ -34,7 +34,7 @@ namespace Mapping.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(UserCreateViewModel model)
+        public async Task<IActionResult> Create([FromForm]UserCreateViewModel model)
         {
             var result = await _userService.CreateAsync(model);
 

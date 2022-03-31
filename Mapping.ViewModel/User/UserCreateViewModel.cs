@@ -14,6 +14,7 @@ namespace Mapping.ViewModel.User
         public string Password { get; set; }
 
         public int Age { get; set; }
+
         public IFormFile Image { get; set; }
     }
 }
