@@ -106,7 +106,7 @@ namespace Mapping.Service.Services
         {
             fileName = Guid.NewGuid().ToString() + "_" + fileName;
             string storagePath = _configuration.GetSection("Storage:ImageUrl").Value;
-            string filePath = Path.Combine(_env.WebRootPath, storagePath);
+            string filePath = Path.Combine(_env.WebRootPath, $"{storagePath}/{fileName}");
             FileStream newFile = File.Create(filePath);
             await file.CopyToAsync(newFile);
             newFile.Close();
