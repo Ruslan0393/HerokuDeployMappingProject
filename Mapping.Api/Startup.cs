@@ -31,7 +31,7 @@ namespace Mapping.Api
 
             services.AddDbContext<MappingDbContext>(options =>
             {
-                options.UseSqlServer(Configuration.GetConnectionString("MappingConnection"));
+                options.UseNpgsql(Configuration.GetConnectionString("MappingConnection"));
             });
 
             services.AddControllers();
