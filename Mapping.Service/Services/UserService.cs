@@ -14,14 +14,14 @@ using System.Threading.Tasks;
 
 namespace Mapping.Service.Services
 {
+
+   // men qo'shildim
     public class UserService : IUserService
     {
-
         private IUserRepository _userRepository;
         private IMapper _mapper;
         private IConfiguration _configuration;
         private IWebHostEnvironment _env;
-
 
         public UserService(IUserRepository userRepository, IMapper mapper, IConfiguration configuration, IWebHostEnvironment env)
         {
@@ -36,7 +36,6 @@ namespace Mapping.Service.Services
             var resalt = new BaseResponse<User>();
 
             var user = _mapper.Map<User>(model);
-          
 
             user.Image = await UploadFileAsync(model.Image.OpenReadStream(), model.Image.FileName);
 
