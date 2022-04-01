@@ -14,6 +14,8 @@ using System.Threading.Tasks;
 
 namespace Mapping.Service.Services
 {
+
+   // men qo'shildim
     public class UserService : IUserService
     {
         private IUserRepository _userRepository;
