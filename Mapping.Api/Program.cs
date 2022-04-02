@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using Serilog;
+using System;
 
 namespace Mapping.Api
 {
@@ -7,8 +9,30 @@ namespace Mapping.Api
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            Log.Logger = new LoggerConfiguration().WriteTo.File(
+                path: "Logs\\log.txt",
+                outputTemplate: "{Timestamp: yyyy-MM-dd HH:mm:ss } " +
+                    "[{Level:u3}] {Message} {NewLine} {Exception}",
+                rollingInterval: RollingInterval.Day,
+                restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Information
+                ).CreateLogger();
+            try
+            {
+                Log.Information("Run program");
+                CreateHostBuilder(args).Build().Run();
+            }
+            catch
+            {
+                Log.Fatal("Xatolik bo'ldi");
+            }
+            finally
+            {
+                Log.CloseAndFlush();
+            }
         }
+
+
+
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
